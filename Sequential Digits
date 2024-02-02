@@ -20,3 +20,6 @@ public:
         }return res;
     }
 };
+
+// T.C:O(N) where n is the total number of sequential digits;
+//S.C : O(N)
