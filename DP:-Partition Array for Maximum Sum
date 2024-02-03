@@ -1,0 +1,30 @@
+// using Memoization
+//without memoization TC=O(K^n) 
+//with memization TC=O(N*K)
+
+class Solution {
+public:
+
+    int dp[501];
+    int solve(int i,vector<int>& arr, int k){
+        if(i>=arr.size())return 0;
+        int currmax=-1;
+        int res=0;
+        int n=arr.size(); 
+        if(dp[i]!=-1)return dp[i];
+        for(int j=i;j<n&& j-i+1<=k ; j++){
+            currmax=max(currmax,arr[j]);
+           res=max(res, (j-i+1)*currmax+solve(j+1,arr,k));
+        }
+        return dp[i] =res;
+    }
+
+
+
+    int maxSumAfterPartitioning(vector<int>& arr, int k) {
+        int i=0;
+        memset(dp,-1,sizeof(dp));
+        return solve(i,arr,k);
+    }
+};
+
