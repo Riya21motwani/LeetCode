@@ -1,0 +1,23 @@
+
+//using map
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+    map<int, int>u;
+    int n=nums.size();
+     vector<int> res;
+    for (int i=0;i<n;i++){
+        int a=nums[i];
+        int more=target-a;
+        if(u .find(more)!=u.end()){
+            return {u[more],i};
+        }
+        u[a]=i;
+    }
+
+        return {-1,-1};
+    } 
+}; 
+
+//t.c: O(N*logN) or  incase of unordered mapO(N)
+//sc:O(N)
