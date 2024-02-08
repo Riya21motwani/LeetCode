@@ -1,0 +1,24 @@
+
+//m1 memoization
+#include<bits/stdc++.h>
+class Solution {
+
+public:
+
+    int solve(int n , vector<int>&dp){
+        int mini=INT_MAX;
+        if(n==0)return 0;
+        if(dp[n]!=-1)return dp[n];
+        for(int i=1;i*i<=n;i++){
+            int res=1+solve(n-i*i , dp);
+
+            mini=min(mini,res);
+        }
+        return dp[n]=mini;
+    }
+    int numSquares(int n) {
+        vector<int>dp(10001,-1);
+        return solve(n , dp);
+    }
+};
+
