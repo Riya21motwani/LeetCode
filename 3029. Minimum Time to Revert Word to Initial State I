@@ -1,0 +1,73 @@
+imp->Constraints:
+
+      1 <= word.length <= 50 
+      1 <= k <= word.length
+      word consists only of lowercase English letters.
+
+
+class Solution {
+public:
+
+    bool check( string &word,string &temp, int i){
+        int j=0;
+        int n=word.size();
+        while( i<n){
+            if(word[j]==temp[i]){
+                i++;
+                j++;
+            }
+            else{
+                return 0;
+            }
+        }
+       return 1;
+          
+    }
+
+    int minimumTimeToInitialState(string word, int k) {
+        int i=k;
+        int cnt=1;
+        int n=word.size();
+        string temp=word;
+        while(i<n){
+            if(check(word,temp,i)){
+                break;
+            }
+            cnt++;
+            i+=k;
+        }
+        return cnt;
+    }
+};
+
+
+
+//m2 using substrg
+//tc=O(N^2)
+class Solution {
+public:
+
+    bool check( string &word,string &temp, int i){
+        int n=word.size();
+        if(word.substr(0,n-i)==word.substr(i,n-i)){
+            return 1;
+        }
+        return 0;
+          
+    }
+
+    int minimumTimeToInitialState(string word, int k) {
+        int i=k;
+        int cnt=1;
+        int n=word.size();
+        string temp=word;
+        while(i<n){
+            if(check(word,temp,i)){
+                break;
+            }
+            cnt++;
+            i+=k;
+        }
+        return cnt;
+    }
+};
