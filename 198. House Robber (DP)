@@ -1,0 +1,22 @@
+class Solution {
+public:
+
+  int maxhouse(int ind,vector<int>& nums,vector<int>&dp){
+      if(ind==0)return nums[ind];
+      if(ind==1)return max( nums[0],nums[1]);
+      if(dp[ind]!=-1)return dp[ind];
+      int take=INT_MIN;
+      if(ind>1){
+           take=nums[ind]+maxhouse(ind-2,nums,dp);
+      }
+      int nottake=maxhouse(ind-1,nums,dp);
+      return dp[ind] =max(take,nottake);
+  }
+
+    int rob(vector<int>& nums) {
+        int n=nums.size();
+        vector<int>dp(n,-1);
+        return maxhouse(n-1,nums,dp);
+
+    }
+};
