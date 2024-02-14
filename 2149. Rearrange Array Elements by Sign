@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<int> rearrangeArray(vector<int>& nums) {
+         int n = nums.size();
+        int po = 0; 
+        int ne = 1; 
+        
+        
+        vector<int> result(n);
+        
+        for(int &num : nums) {
+            if(num > 0) {
+                result[po] = num;
+                po +=2;
+            } else {
+                result[ne] = num;
+                ne += 2;
+            }
+        }
+        
+        return result;   
+    }
+};
