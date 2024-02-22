@@ -1,0 +1,46 @@
+//m1 
+//t.c=O(2N)
+
+class Solution {
+public:
+    int findJudge(int n, vector<vector<int>>& trust) {
+        vector<int>incoming(n+1);
+        vector<int>outgoing(n+1);
+        for(vector<int>&vec:trust){
+            int u=vec[0];
+            int v=vec[1];
+            outgoing[u]++;
+            incoming[v]++;
+
+        }
+        for(int i=1;i<=n;i++){
+            if(outgoing[i]==0 && incoming[i]==n-1){
+                return i;
+            }
+        }
+        return -1;
+    }
+};
+
+//m2
+//t.c=O(N)
+class Solution {
+public:
+    int findJudge(int n, vector<vector<int>>& trust) {
+        vector<int>overall(n+1);
+        
+        for(vector<int>&vec:trust){
+            int u=vec[0];
+            int v=vec[1];
+            overall[u]--;
+            overall[v]++;
+
+        }
+        for(int i=1;i<=n;i++){
+            if(overall[i]==n-1){
+                return i;
+            }
+        }
+        return -1;
+    }
+};
