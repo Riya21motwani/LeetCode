@@ -4,16 +4,21 @@ public:
         int n=nums.size();
         
         int cnt=0;
-        for(int i=0;i<n;i++){
-            int pro=1;
-          for(int j=i;j<n;j++){
-             pro=pro*nums[j];
-              if(pro<k){
-                 cnt++;
-              }else{
-                 break;
-              }
-          }
+        int i=0;
+        int j=0;
+        int p=1;
+        if(k<=1)return 0;
+        while(j<n){
+           p=p*nums[j];
+              
+            while(p>=k){
+               p=p/nums[i];
+                i++;
+               
+            }
+            cnt+=j-i+1;
+                  j++;
+
         }
         return cnt;
     }
