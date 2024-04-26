@@ -1,0 +1,42 @@
+// sorting+bs+func
+//T.C=O(nlogn *logn*n)
+
+bool possible(vector<int> &stalls, int k,int m){
+      int n=stalls.size();
+      int cntcow=1;
+      int last=stalls[0];
+      for(int i=1;i<n;i++){
+         if(stalls[i]-last>=m){
+             cntcow++;
+             last=stalls[i];
+             if(cntcow>=k){
+                 return true;
+             }
+         }
+      }
+      return false;
+}
+
+
+int aggressiveCows(vector<int> &stalls, int k)
+{
+   
+     int n=stalls.size();
+    sort(stalls.begin(),stalls.end());
+    int l=0;
+    int ans=0;
+    int h=stalls[n-1]-stalls[0];
+    while(l<=h){
+
+        int m=l+(h-l)/2;
+        if(possible(stalls,k,m)==true){
+
+            ans=m;
+            l=m+1;
+        }
+        else{
+            h=m-1;
+        }
+    }
+    return ans;
+}
