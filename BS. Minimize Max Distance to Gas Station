@@ -1,0 +1,78 @@
+
+//TLE BRUTEFORCE APPROACH
+//O(N^2)
+//CONCEPT OF Priority Queue 
+//priority queue push operation takes O(logN) time 
+//while to find top it takes O(1)
+
+//  pq.push(3);
+//  pq.push(4);
+//  pq.push(2);
+//  pq.top()
+//  =>4
+
+
+
+double minimiseMaxDistance(vector<int> &arr, int k){
+	// Write your code here.
+	
+	int n=arr.size();
+	vector<int>hourly(n-1,0);
+	for( int gs=1;gs<=k;gs++){
+		 long double maxind=-1; long double maxsection=-1;
+		for(int i=0;i<n-1;i++){
+			long double diff=arr[i+1]-arr[i];
+              long double sectionlength=(diff)/(hourly[i]+1);
+			  if(maxsection<sectionlength){
+				  maxsection=sectionlength;
+				  maxind=i;
+			  }
+		}
+		hourly[maxind]++;
+	}
+	 long double maxi=-1;
+		for(int i=0;i<n-1;i++){
+			 long double diff=arr[i+1]-arr[i];
+              long double sectionlength=(diff)/(hourly[i]+1);
+			maxi=max(maxi,sectionlength);
+
+		}
+		return maxi;
+}
+
+
+
+
+
+//method2 optimal
+
+#include<bits/stdc++.h>
+
+double minimiseMaxDistance(vector<int> &arr, int k){
+	// Write your code here.
+	
+	int n=arr.size();
+	vector<int>hourly(n-1,0);
+	priority_queue<pair<long double,int>>pq;
+	for(int i=0;i<n-1;i++){
+		pq.push({arr[i+1]-arr[i], i});
+	}
+
+	for(int gastation=1;gastation<=k;gastation++){
+		auto tp=pq.top();
+		pq.pop();
+	    long double sectionind=tp.second;
+		hourly[sectionind]++;
+		long double diff=arr[sectionind+1]-arr[sectionind];
+		long double newsection=diff/(long double)(hourly[sectionind]+1);
+		pq.push({newsection,sectionind});
+
+	}
+	return pq.top().first;
+}
+
+
+
+
+
+
