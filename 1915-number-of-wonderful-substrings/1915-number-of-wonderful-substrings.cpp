@@ -1,21 +1,25 @@
 class Solution {
 public:
-    long long wonderfulSubstrings(string word) {
-         long long result = 0;
-        int bitmask = 0;
-        vector<int> bitmaskCount(1024, 0);
-        bitmaskCount[0] = 1;
-        
-        for (char c : word) {
-            bitmask ^= 1 << (c - 'a');
-            result += bitmaskCount[bitmask];
-            for (int i = 0; i < 10; ++i) {
-                int targetBitmask = bitmask ^ (1 << i);
-                result += bitmaskCount[targetBitmask];
+    unordered_map<int,int>umap;
+        umap[0]=1;
+        int doxor=0;
+        long long ans=0;
+        for(char & ch1:word){
+  
+            
+            int t=ch1-'a';
+            doxor^=(1<<t);
+            ans+=umap[doxor];
+            
+            for(char ch2 ='a' ; ch2<='j';ch2++){
+                 
+                t=ch2-'a';
+                long long checking =(doxor^(1<<t));
+                ans+=umap[checking];
             }
-            bitmaskCount[bitmask]++;
-        }
         
-        return result;
+         umap[doxor]++;
+        }
+        return ans;
     }
 };
