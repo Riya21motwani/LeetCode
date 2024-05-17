@@ -12,34 +12,32 @@
 class Solution {
 public:
     
-    int findcnt(TreeNode* root){
-      int cnt=1;
-        queue<TreeNode*>q;
-        if(root==NULL)return 0;
-        q.push(root);
-        while(!q.empty()){
-           int size=q.size();
-            for(int i=0;i<size;i++){
-                TreeNode*node=q.front();
-                q.pop();
-                   if(node->left){
-                        cnt++;
-                       q.push(node->left);
-                       
-                   }
-                if(node->right){
-                        cnt++;
-                       q.push(node->right);
-                       
-                   }
-            }
+    int findheightleft(TreeNode* node){
+      int height=0;
+        while(node!=NULL){
 
+            height++;
+            node=node->left;
+            
         }
-        return cnt;
-
+        return height;
     }
     
+     int findheightright(TreeNode* node){
+      int height=0;
+        while(node!=NULL){
+
+            height++;
+            node=node->right;
+            
+        }
+        return height;
+    }
     int countNodes(TreeNode* root) {
-        return findcnt(root);
+       if(root==NULL)return 0;
+        int lh=findheightleft(root);
+        int rh=findheightright(root);
+        if(lh==rh) return pow(2,lh) -1;
+        return 1+countNodes(root->left)+countNodes(root->right);
     }
 };
