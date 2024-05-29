@@ -17,7 +17,7 @@ public:
     int up = f(i - 1, j, dp);
     int left = f(i, j - 1, dp);
 
-    // Store the result in the dp table and return it.
+    
     return dp[i][j] = up + left;
        
     }
