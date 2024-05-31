@@ -17,5 +17,17 @@ public:
         int n=triangle.size();
         vector<vector<int>>dp(n,vector<int>(n,-1));
         return f(0,0,triangle,dp);
+        
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                 if(i==n-1){
+                     dp[i][j]= triangle[i][j];
+                  }
+                   int d=triangle[i][j]+f(i+1,j,triangle,dp);
+                 int dia=triangle[i][j]+f(i+1,j+1,triangle,dp);
+                dp[i][j]=min(d,dia);
+            }
+        }
+        return dp[n-1][n-1];
     }
 };
