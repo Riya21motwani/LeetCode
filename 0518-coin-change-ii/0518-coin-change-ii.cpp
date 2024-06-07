@@ -22,25 +22,25 @@ public:
     int change(int amount, vector<int>& coins) {
        
         int n=coins.size();
-         vector<vector<int>>dp(n,vector<int>(amount+1,0));
+         // vector<vector<int>>dp(n,vector<int>(amount+1,0));
         // return f(n-1,amount,coins,dp);
-        
+        vector<int>curr(amount+1,0),prev(amount+1,0);
         for(int i=0;i<=amount;i++){
-             dp[0][i]=i%coins[0]==0;
+             prev[i]=i%coins[0]==0;
         }
         
         for(int ind=1;ind<n;ind++){
            for(int amt=0;amt<=amount;amt++){
-              int nottake=dp[ind-1][amt];
+              int nottake=prev[amt];
               int take=0;
               if(coins[ind]<=amt){
-              take=dp[ind][amt-coins[ind]];
+              take=curr[amt-coins[ind]];
            }
-                dp[ind][amt]= nottake+take;
+                curr[amt]= nottake+take;
         }
            
-            
+           prev=curr ;
         }
-        return dp[n-1][amount];
+        return prev[amount];
     }
 };
