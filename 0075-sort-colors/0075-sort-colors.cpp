@@ -2,14 +2,17 @@ class Solution {
 public:
     void sortColors(vector<int>& nums) {
         int n=nums.size();
-        for(int i=0;i<n-1;i++){
-            int mini=i;
-            for(int j=i+1;j<n;j++){
-                if(nums[j]<nums[mini]){
-                    mini=j;
-                }
+       map<int,int>umap;
+        for(int i=0;i<n;i++){
+            umap[nums[i]]++;
+        }
+        int i=0;
+        for(auto &it:umap){
+            int freq=it.second;
+            while(freq>0 && i<n){
+                nums[i++]=it.first;
+                freq--;
             }
-            swap(nums[i],nums[mini]);
         }
     }
 };
