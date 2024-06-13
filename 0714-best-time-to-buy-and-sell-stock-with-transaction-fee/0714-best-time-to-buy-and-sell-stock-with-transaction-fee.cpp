@@ -21,27 +21,27 @@ public:
         
                 
           int n=prices.size();
-        vector<vector<int>>dp(n+1,vector<int>(2,-1));
+        // vector<vector<int>>dp(n+1,vector<int>(2,-1));
         
+        vector<int>prev(2,0);
+        vector<int>curr(2,0);
         
-        dp[n][0]=0;
-        dp[n][1]=0;
         
         for(int ind=n-1;ind>=0;ind--){
            
                  int profit=0;
                 
-                  dp[ind][1]=max(-prices[ind]+dp[ind+1][0],dp[ind+1][1]);
+                  curr[1]=max(-prices[ind]+prev[0],prev[1]);
                 
-                    dp[ind][0]=max(prices[ind]+dp[ind+1][1]-fee,dp[ind+1][0]);
+                    curr[0]=max(prices[ind]+prev[1]-fee,prev[0]);
                   
-                  
+                  prev=curr;
             
         }
         
         
         
-        return dp[0][1];
+        return curr[1];
         
         
         
