@@ -41,7 +41,7 @@ public:
         
         
         
-        return curr[1];
+        return prev[1];
         
         
         
