@@ -20,21 +20,21 @@ public:
     
          // return f(nums, n, 0, -1, dp);
          vector<int>curr(n + 1, 0);
-        vector<int>prev(n + 1, 0);
+        vector<int>next(n + 1, 0);
         
         for(int ind=n-1;ind>=0;ind--){
             for(int prev_index=ind-1;prev_index>=-1;prev_index--){
-                int nottake=prev[prev_index+1];
+                int nottake=next[prev_index+1];
                  int take=0;
                 if( prev_index==-1 || nums[ind]>nums[prev_index] ){
-                 take=1+prev[ind+1];
+                 take=1+next[ind+1];
                   }
                   curr[prev_index+1]=max(take,nottake);
             }
-            prev=curr;
+            next=curr;
         }
         
-        return prev[0];
+        return next[0];
         
         
     }
