@@ -3,9 +3,17 @@ class Solution {
 public:
     bool judgeSquareSum(int c) {
     
-        for(ll a=0;a*a<=c;a++){
-            ll b=sqrt(c-a*a);
-            if(b*b==c-a*a)return true;
+       ll a=0;
+    ll b=sqrt(c);
+        while(a<=b){
+            ll val=a*a+b*b;
+            if(val>c){
+                b--;
+            }else if(val<c){
+                a++;
+            }else{
+                 return true;
+            }
         }
         return false;
     }
