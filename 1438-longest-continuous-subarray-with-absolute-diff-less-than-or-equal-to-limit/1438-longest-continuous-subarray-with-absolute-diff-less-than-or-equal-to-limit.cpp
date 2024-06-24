@@ -1,35 +1,28 @@
 class Solution {
 public:
+    typedef pair<int,int>P;
     int longestSubarray(vector<int>& nums, int limit) {
-        priority_queue<pair<int, int>> maxHeap;
-        priority_queue<pair<int, int>, vector<pair<int, int>>,
-                       greater<pair<int, int>>>
-            minHeap;
-
-        int left = 0, maxLength = 0;
-
-        for (int right = 0; right < nums.size(); ++right) {
-            maxHeap.push({nums[right], right});
-            minHeap.push({nums[right], right});
-
-          
-            while (maxHeap.top().first - minHeap.top().first > limit) {
-               
-                left = min(maxHeap.top().second, minHeap.top().second) + 1;
-
-               
-                while (maxHeap.top().second < left) {
-                    maxHeap.pop();
+       int n=nums.size();
+        int i=0;
+        int j=0;
+        int maxlength=0;
+        priority_queue<P>maxpq;
+        priority_queue<P,vector<P>,greater<P>>minpq;
+        while(j<n){
+            maxpq.push({nums[j],j});
+            minpq.push({nums[j],j});
+            while(maxpq.top().first-minpq.top().first>limit){
+                i=min(maxpq.top().second,minpq.top().second)+1;
+                while(maxpq.top().second<i){
+                    maxpq.pop();
                 }
-                while (minHeap.top().second < left) {
-                    minHeap.pop();
+                while(minpq.top().second<i){
+                    minpq.pop();
                 }
             }
-
-         
-            maxLength = max(maxLength, right - left + 1);
+            maxlength=max(maxlength,j-i+1);
+            j++;
         }
-
-        return maxLength;
+        return maxlength;
     }
 };
