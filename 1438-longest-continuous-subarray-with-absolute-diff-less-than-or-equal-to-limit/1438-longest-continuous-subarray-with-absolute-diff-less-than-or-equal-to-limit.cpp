@@ -6,7 +6,7 @@ public:
         int i=0;
         int j=0;
         int maxlength=0;
-        priority_queue<P>maxpq;
+        priority_queue<P,vector<P>>maxpq;
         priority_queue<P,vector<P>,greater<P>>minpq;
         while(j<n){
             maxpq.push({nums[j],j});
