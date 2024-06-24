@@ -6,19 +6,13 @@ public:
         int i=0;
         int j=0;
         int maxlength=0;
-        priority_queue<P,vector<P>>maxpq;
-        priority_queue<P,vector<P>,greater<P>>minpq;
+        multiset<int>st;
         while(j<n){
-            maxpq.push({nums[j],j});
-            minpq.push({nums[j],j});
-            while(maxpq.top().first-minpq.top().first>limit){
-                i=min(maxpq.top().second,minpq.top().second)+1;
-                while(maxpq.top().second<i){
-                    maxpq.pop();
-                }
-                while(minpq.top().second<i){
-                    minpq.pop();
-                }
+            st.insert(nums[j]);
+            while(*st.rbegin()-*st.begin()>limit){
+               
+               st.erase(st.find(nums[i]));
+                i++;
             }
             maxlength=max(maxlength,j-i+1);
             j++;
