@@ -11,40 +11,33 @@
  */
 class Solution {
 public:
-     TreeNode* balanceBST(TreeNode* root) {
-     
-        vector<int> inorder;
-        inorderTraversal(root, inorder);
-
-        int size = inorder.size();
-
-      
-        return createBalancedBST(inorder, 0, size - 1);
-    }
-
-private:
-    void inorderTraversal(TreeNode* root, vector<int>& inorder) {
+    
+    void inordert(TreeNode* root, vector<int>& inorder) {
        
-        if (root == nullptr) return;
-        inorderTraversal(root->left, inorder);
+        if(root==NULL)return;
+        
+        inordert(root->left,inorder);
         inorder.push_back(root->val);
-        inorderTraversal(root->right, inorder);
+        inordert(root->right,inorder);
     }
 
-    TreeNode* createBalancedBST(const vector<int>& inorder, int start,
-                                int end) {
-       
-        if (start > end) return nullptr;
-
+    TreeNode* createBST(const vector<int>& inorder, int s,
+            
+                        int e) {
         
-        int mid = start + (end - start) / 2;
-
-       
-        TreeNode* leftSubtree = createBalancedBST(inorder, start, mid - 1);
-        TreeNode* rightSubtree = createBalancedBST(inorder, mid + 1, end);
-
+        if(s>e)return NULL;
+        int mid=s+(e-s)/2;
         
-        return new TreeNode(inorder[mid], leftSubtree, rightSubtree);
+        TreeNode* root=new TreeNode(inorder[mid]);
+        root->left=createBST(inorder,s,mid-1);
+        root->right=createBST(inorder,mid+1,e);
+ 
+       return root;
     }
     
+     TreeNode* balanceBST(TreeNode* root) {
+         vector<int>inorder;
+         inordert(root,inorder);
+         return createBST(inorder,0,inorder.size()-1);
+    }
 };
