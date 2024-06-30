@@ -1,42 +1,32 @@
 class Solution {
 public:
     
-    void dfs(int node, vector<vector<int>>&adj, unordered_set<int>&uset ){
-       uset.insert(node);
-        for(auto it:adj[node]){
-            if(uset.find(it)==uset.end()){
-                dfs(it,adj,uset);
-            }
+    void dfs(int ancestor, int currnode ,  unordered_map<int,vector<int>>&adj, vector<vector<int>>& ans ){
+         
+        for(auto it:adj[currnode]){
+            if(ans[it].empty() || ans[it].back()!=ancestor){
+            ans[it].push_back(ancestor);
+            dfs(ancestor, it,adj,ans);
         }
-        
+    }
     }
     
     vector<vector<int>> getAncestors(int n, vector<vector<int>>& edges) {
-        vector<vector<int>>adj(n);
-        vector<vector<int>> ans;
+        unordered_map<int,vector<int>>adj;
+        vector<vector<int>> ans(n);
         int m=edges.size();
       
             for(auto it:edges){
                 int u=it[0];
                 int v=it[1];
-                adj[v].push_back(u);
+                adj[u].push_back(v);
             }
         
             for(int i=0;i<n;i++){
-               unordered_set<int>uset;
-                vector<int>ls;
-                dfs(i,adj,uset);
-                for(int j=0;j<n;j++){
-                    if(j==i)continue;
-                    if(uset.find(j)!=uset.end()){
-                        ls.push_back(j);
-                    }
-                }
-                
-                ans.push_back(ls);
+                int ancestor=i;
+                dfs(ancestor, i ,adj ,ans);
             }
-         return ans;
         
-       
+       return ans;
     }
 };
