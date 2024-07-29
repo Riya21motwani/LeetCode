@@ -1,47 +1,54 @@
 class Solution {
 public:
+    typedef pair<int,int>p;
     int secondMinimum(int n, vector<vector<int>>& edges, int time, int change) {
-        vector<vector<int>> adj(n + 1);
-        for (auto& edge: edges) {
-            adj[edge[0]].push_back(edge[1]);
-            adj[edge[1]].push_back(edge[0]);
+       vector<int>adj[n+1];
+        for(auto it:edges){
+            int u=it[0];
+            int v=it[1];
+            adj[u].push_back(v);
+            adj[v].push_back(u);
         }
-
-       
-        vector<int> dist1(n + 1, numeric_limits<int>::max()),
-            dist2(n + 1, numeric_limits<int>::max()), freq(n + 1);
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> min_heap;
-        min_heap.push({0, 1});
-        dist1[1] = 0;
-
-        while (!min_heap.empty()) {
-            auto [timeTaken, node] = min_heap.top();
-            min_heap.pop();
-
-            freq[node]++;
-          
-            if (freq[node] == 2 && node == n) return timeTaken;
-           
-            if ((timeTaken / change) % 2) {
-                timeTaken = change * (timeTaken / change + 1) + time;
-            } else {
-                timeTaken = timeTaken + time;
+        
+        vector<int>d1(n+1,1e9);
+        vector<int>d2(n+1,1e9);
+        
+        priority_queue<p,vector<p>,greater<p>>pq;
+        pq.push({0,1});
+        d1[1]=0;
+        while(!pq.empty()){
+            int timepass=pq.top().first;
+            int node=pq.top().second;
+            pq.pop();
+            if(node==n && d2[n]!=1e9){
+                return d2[n];
             }
-
-            for (auto& neighbor: adj[node]) {
+           
+            int d=timepass/change;
+            
+            if(d%2==1){
+                timepass=(d+1)*change;
                 
-                if (freq[neighbor] == 2) continue;
-               
-                if (dist1[neighbor] > timeTaken) {
-                    dist2[neighbor] = dist1[neighbor];
-                    dist1[neighbor] = timeTaken;
-                    min_heap.push({timeTaken, neighbor});
-                } else if (dist2[neighbor] > timeTaken && dist1[neighbor] != timeTaken) {
-                    dist2[neighbor] = timeTaken;
-                    min_heap.push({timeTaken, neighbor});
+            }
+            
+            for(auto it:adj[node]){
+                if(d1[it]>timepass+time){
+                    d2[it]=d1[it];
+                    d1[it]=timepass+time;
+                    pq.push({timepass+time,it});
+                }
+                else if(d2[it]>timepass+time && d1[it]!=timepass+time){
+                    d2[it]=timepass+time;
+                    pq.push({timepass+time,it});
                 }
             }
+            
+            
         }
-        return 0;
+        
+        
+        return -1;
+        
+        
     }
 };
