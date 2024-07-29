@@ -3,44 +3,37 @@ public:
     long long minimumCost(string source, string target, vector<char>& original,
                           vector<char>& changed, vector<int>& cost) {
         
-        long long totalCost = 0;
-
+       vector<vector<long long >>matrix(26,vector<long long>(26,1e9));
+        int n=original.size();
         
-        vector<vector<long long>> minCost(26, vector<long long>(26, INT_MAX));
-
-       
-        for (int i = 0; i < original.size(); ++i) {
-            int startChar = original[i] - 'a';
-            int endChar = changed[i] - 'a';
-            minCost[startChar][endChar] =
-                min(minCost[startChar][endChar], (long long)cost[i]);
+        for(int i=0;i<n;i++){
+            
+            matrix[original[i]-'a'][changed[i]-'a'] = min((long long)cost[i],matrix[original[i]-'a'][changed[i]-'a'] );
+            
         }
-
         
-        for (int k = 0; k < 26; ++k) {
-            for (int i = 0; i < 26; ++i) {
-                for (int j = 0; j < 26; ++j) {
-                    minCost[i][j] =
-                        min(minCost[i][j], minCost[i][k] + minCost[k][j]);
+        
+        for(int k=0;k<26;k++){
+            for(int i=0;i<26;i++){
+                for(int j=0;j<26;j++){
+                    matrix[i][j]=min(matrix[i][j],matrix[i][k]+matrix[k][j]);
                 }
             }
         }
-
-       
-        for (int i = 0; i < source.size(); ++i) {
-            if (source[i] == target[i]) {
-                continue;
-            }
-            int sourceChar = source[i] - 'a';
-            int targetChar = target[i] - 'a';
-
+        
          
-            if (minCost[sourceChar][targetChar] >= INT_MAX) {
+        int m=source.size();
+        long long ans=0;
+        for(int i=0;i<m;i++){
+           if(source[i]==target[i]){
+               continue;
+           }
+            if(matrix[source[i]-'a'][target[i]-'a']==1e9){
                 return -1;
             }
-            totalCost += minCost[sourceChar][targetChar];
+             ans+=matrix[source[i]-'a'][target[i]-'a'];
         }
-
-        return totalCost;
+        
+        return ans;
     }
 };
