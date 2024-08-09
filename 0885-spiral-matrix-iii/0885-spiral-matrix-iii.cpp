@@ -1,29 +1,31 @@
 class Solution {
 public:
     vector<vector<int>> spiralMatrixIII(int rows, int cols, int rStart, int cStart) {
-         vector<vector<int>> d=  {
-                                            {0, 1}, {1, 0},  {0, -1},  {-1, 0}   };
+        vector<vector<int>> ans;
+       
+        vector<vector<int>>dir={{0,1} , {1,0},{0,-1} ,{-1,0}};
+        int cnt=0;
+        int d=0;
         
-        vector<vector<int>> result;  
-        int step = 0;
-        int dir  = 0; 
-
-        result.push_back({rStart, cStart});
-
-        while (result.size() < rows * cols) {
-          
-            if (dir == 0 || dir == 2) step++;
-
-            for (int i = 0; i < step; i++) {
-                rStart += d[dir][0];
-                cStart += d[dir][1];
-
-                if (rStart >= 0 && rStart < rows && cStart >= 0 && cStart < cols) // check valid
-                    result.push_back({rStart, cStart});
+        ans.push_back({rStart,cStart});
+        
+        while(ans.size()<(rows*cols)){
+            
+            if(d==0 || d==2){
+                cnt++;
             }
-
-            dir = (dir + 1) % 4; 
-        }
-        return result;
+            
+            
+            for(int i=0;i<cnt;i++){
+            rStart+=dir[d][0];
+            cStart+=dir[d][1];
+            if(rStart>=0 && rStart<rows && cStart>=0 && cStart<cols){
+                ans.push_back({rStart , cStart});
+            }
+          }
+            d=(d+1)%4;
+        } 
+        
+        return ans;
     }
 };
