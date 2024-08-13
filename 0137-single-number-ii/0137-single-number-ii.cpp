@@ -2,17 +2,25 @@ class Solution {
 public:
     int singleNumber(vector<int>& nums) {
         int n=nums.size();
-        unordered_map<int,int>umap;
-        for(int i=0;i<n;i++){
-            umap[nums[i]]++;
-        }
+       
+        int res=0;
         
-        for(auto it:umap){
-            if(it.second==1){
-                return it.first;
+        for(int k=0;k<=31;k++){
+            int temp=(1<<k);
+            int cntzero=0;
+            int cntone=0;
+            for(int &it:nums){
+                if( (it & temp)==0){
+                    cntzero++;
+                }else{
+                    cntone++;
+                }
+            }
+            
+            if(cntone%3==1){
+                res=(res| temp);
             }
         }
-        
-        return -1;
+        return res;
     }
 };
