@@ -2,62 +2,62 @@ class Solution {
 public:
      #define mod 1000000007
     #define ll long long
-     vector<ll>findnsl(vector<int>&nums){
-        stack<int>st;
+//      vector<ll>findnsl(vector<int>&nums){
+//         stack<int>st;
         
-        int m=nums.size();
-        vector<ll>nsl(m);
-        for(int i=0;i<m;i++){
+//         int m=nums.size();
+//         vector<ll>nsl(m);
+//         for(int i=0;i<m;i++){
             
-            if(st.empty()){
-                nsl[i]=-1;
-            }
+//             if(st.empty()){
+//                 nsl[i]=-1;
+//             }
                 
-        else{
-            while(!st.empty() && nums[st.top()]>=nums[i] ){
-                st.pop();
-            }
-            if(!st.empty()){
-                nsl[i]=st.top();
-            }
-            else{
-                nsl[i]=-1;
-            }
+//         else{
+//             while(!st.empty() && nums[st.top()]>=nums[i] ){
+//                 st.pop();
+//             }
+//             if(!st.empty()){
+//                 nsl[i]=st.top();
+//             }
+//             else{
+//                 nsl[i]=-1;
+//             }
            
-        }
-         st.push(i);
-        }
-        return nsl;
-    }
+//         }
+//          st.push(i);
+//         }
+//         return nsl;
+//     }
     
     
-    vector<ll>findnsr(vector<int>&nums){
-        stack<int>st;
+//     vector<ll>findnsr(vector<int>&nums){
+//         stack<int>st;
         
-        int m=nums.size();
-        vector<ll>nsr(m);
-        for(int i=m-1;i>=0;i--){
+//         int m=nums.size();
+//         vector<ll>nsr(m);
+//         for(int i=m-1;i>=0;i--){
             
-            if(st.empty()){
-                nsr[i]=m;
-            }
+//             if(st.empty()){
+//                 nsr[i]=m;
+//             }
                 
-        else{
-            while( !st.empty() && nums[st.top()]>=nums[i] ){
-                st.pop();
-            }
-            if(!st.empty()){
-                nsr[i]=st.top();
-            }
-            else{
-                nsr[i]=m;
-            }
+//         else{
+//             while( !st.empty() && nums[st.top()]>=nums[i] ){
+//                 st.pop();
+//             }
+//             if(!st.empty()){
+//                 nsr[i]=st.top();
+//             }
+//             else{
+//                 nsr[i]=m;
+//             }
            
-        }
-         st.push(i);
-        }
-        return nsr;
-    }
+//         }
+//          st.push(i);
+//         }
+//         return nsr;
+//     }
     int maxSumMinProduct(vector<int>& nums) {
         int n=nums.size();
         vector<int>nse(n);
