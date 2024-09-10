@@ -43,29 +43,29 @@ public:
         
 };
     
-    
     int makeConnected(int n, vector<vector<int>>& connections) {
+        
         disjointset ds(n);
-        int cntedges=0;
         int cntextra=0;
         for(auto it:connections){
             int u=it[0];
             int v=it[1];
+            
             if(ds.findPar(u)==ds.findPar(v)){
                 cntextra++;
-            }
-            else{
+            }else{
                 ds.unionByRank(u,v);
             }
         }
-        int cntcomponent=0;
-       for(int i=0;i<n;i++){
-           if(i==ds.parent[i]){
-               cntcomponent++;
-           }
-       }
-        if(cntextra>=cntcomponent-1){
-            return cntcomponent-1;
+        int component=0;
+        for(int i=0;i<n;i++){
+            if(ds.findPar(i)==i){
+                component++;
+            }
+        }
+        
+        if(component -1 <= cntextra){
+            return component-1;
         }
         return -1;
     }
