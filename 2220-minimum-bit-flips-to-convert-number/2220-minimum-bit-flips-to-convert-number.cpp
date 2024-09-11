@@ -2,16 +2,20 @@ class Solution {
 public:
     int minBitFlips(int start, int goal) {
         
-        if(start==goal)return 0;
+        if(start==goal){
+            return 0;
+        }
         
-        int val=start^goal;
+        int n=start^goal;
+        
+        //no of setbits calculation
         
         int cnt=0;
-        while(val!=1){
-            cnt+=val&1;
-            val=val>>1;
+        while(n!=1){
+            cnt+=n&1;
+            n=n>>1;
         }
-        if(val==1)cnt+=1;
+        if(n==1)cnt+=1;
         return cnt;
     }
 };
