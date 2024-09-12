@@ -2,7 +2,9 @@ class Solution {
 public:
     typedef pair<int,int>p;
     int countPaths(int n, vector<vector<int>>& roads) {
-       vector<pair<long long, long long>> adj[n];
+      
+        
+        vector<pair<long long, long long>> adj[n];
         for (auto it : roads)
         {
             adj[it[0]].push_back({it[1], it[2]});
@@ -20,35 +22,29 @@ public:
 
        
         int mod = (int)(1e9 + 7);
-
-       
-        while (!pq.empty())
-        {
-            long long dis = pq.top().first;
-          long long node = pq.top().second;
+        
+        while(!pq.empty()){
+            long long distance=pq.top().first;
+            long long node=pq.top().second;
             pq.pop();
-
-            for (auto it : adj[node])
-            {
-                long long adjNode = it.first;
-                long long edW = it.second;
-
+            for(auto it:adj[node]){
+                long long newdistance=it.second;
+                long long newnode=it.first;
                 
-                if (dis + edW < dist[adjNode])
-                {
-                    dist[adjNode] = dis + edW;
-                    pq.push({dis + edW, adjNode});
-                    ways[adjNode] = ways[node];
+                if(distance +newdistance < dist[newnode]){
+                    dist[newnode]=distance +newdistance;
+                    ways[newnode]=ways[node];
+                    pq.push({distance +newdistance, newnode});
                 }
-
+                else if(distance +newdistance == dist[newnode]){
+                    ways[newnode]=(ways[newnode]+ways[node])%mod;
+                }
                 
-                else if (dis + edW == dist[adjNode])
-                {
-                    ways[adjNode] = (ways[adjNode] + ways[node]) % mod;
-                }
+                
+                
             }
         }
-        
-        return ways[n - 1] % mod;
+        return ways[n-1]%mod;
+
     }
 };
