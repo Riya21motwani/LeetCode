@@ -6,24 +6,13 @@ public:
         sort(intervals.begin(),intervals.end());
         
         for(int i=0;i<n;i++){
-            int s=intervals[i][0];
-            int e=intervals[i][1];
-            if(ans.size()>0 && ans.back()[1] >= e){
-                continue;
+            if(ans.empty() || ans.back()[1] < intervals[i][0]){
+                ans.push_back(intervals[i]);
+            }else{
+                ans.back()[1]  =max(ans.back()[1] , intervals[i][1]);
             }
-            for(int j=i+1;j<n;j++){
-                
-              
-                
-                if(e>=intervals[j][0]){
-                    e=max(intervals[j][1],e);
-                }else{
-                    break;
-                }
-            }
-            ans.push_back({s,e});
         }
-        
+     
         
       
         return ans;
