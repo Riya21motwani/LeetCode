@@ -10,11 +10,9 @@ public:
             
             map[s[j]-'A']++;
             maxfreq=max(maxfreq, map[s[j]-'A']);
-            while(j-i+1 - maxfreq >k){
+            if(j-i+1 - maxfreq >k){
                map[s[i]-'A']--;
-                for(int p=0;p<26;p++){
-                    maxfreq=max(maxfreq,map[p]);
-                }
+                
                 i++;
             }
             if(j-i+1 - maxfreq <=k){
