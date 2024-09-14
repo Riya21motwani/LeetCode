@@ -1,24 +1,26 @@
 class Solution {
 public:
+     int f(vector<int>& nums, int k , int n){
+        int i=0;
+        int j=0;
+        int sum=0;
+        int cnt=0;
+        if(k<0)return 0;
+        while(j<n){
+            sum+=nums[j]%2;
+            while(sum>k){
+                sum-=nums[i]%2;
+                i++;
+            }
+            cnt+=j-i+1;
+            j++;
+        }
+        return cnt;
+    }
+    
     int numberOfSubarrays(vector<int>& nums, int k) {
         int n=nums.size();
-       unordered_map<int,int>umap;
-        int res=0;
-        int cnt=0;
-        umap[res]=1;
-        
-        for(int i=0;i<n;i++){
-            cnt+=nums[i]%2;
-            if(umap.count(cnt-k)){
-                res+=umap[cnt-k];
-            }
-            umap[cnt]++;
-        }
-        return res;
-        
-        
-        
-        
+        return f(nums, k,n )-f(nums,k-1,n);
 
     }
 };
