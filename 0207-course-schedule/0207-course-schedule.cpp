@@ -2,36 +2,33 @@ class Solution {
 public:
     
     
-    bool bfs( vector<int>&indegree ,unordered_map<int,vector<int>>&adj , int numCourses ){
-          
-        queue<int>q;
-        for(int i=0;i<numCourses;i++){
+    bool bfs( vector<int>&indegree ,unordered_map<int,vector<int>>&adj , int numCourses , queue<int>&q){
+          for(int i=0;i<numCourses;i++){
               if(indegree[i]==0){
-                  q.push(i);
+                      q.push(i);
               }
-        }
-        int cnt=0;
-        while(!q.empty()){
-            int node=q.front();
-            cnt++;
-            q.pop();
-            for(auto it:adj[node]){
-                indegree[it]--;
-                if(indegree[it]==0){
-                    q.push(it);
-                }
-            }
-        }
+          }
+       int cnt=0; 
         
-        if(cnt==numCourses)return true;
+       while(!q.empty()){
+           int node=q.front();
+           q.pop();
+           cnt++;
+           for(auto it:adj[node]){
+               indegree[it]--;
+              if(indegree[it]==0){
+                      q.push(it);
+              }
+           }
+       }
+       if(cnt==numCourses){
+           return true;
+       }
+        
         return false;
         
     }
-    
-    
-    
-    
-    
+
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
         unordered_map<int,vector<int>>adj;
         vector<int>indegree(numCourses,0);
@@ -42,7 +39,7 @@ public:
             adj[b].push_back(a);
             indegree[a]++;
         }
-        
-        return bfs(indegree,adj,numCourses);
+        queue<int>q;
+        return bfs(indegree,adj,numCourses , q);
     }
 };
