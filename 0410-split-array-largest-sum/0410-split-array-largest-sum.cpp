@@ -1,64 +1,45 @@
 class Solution {
 public:
     
-    int solve(vector<int>& nums, int mid){
-       int n=nums.size();
-       int t=0;
-        int cnt=0;
-        int newk=1;
+    int canfind( vector<int>& nums, int n , int idx){
+        int sum=0;
+        int cnt=1;
         for(int i=0;i<n;i++){
-            if(t+nums[i]<=mid){
-               t+=nums[i];
-                
+            if(nums[i]+sum<=idx){
+                sum+=nums[i];
+            }else{
+                cnt++;
+                sum=nums[i];
             }
-            else{
-                t=nums[i];
-                newk+=1;
-              
-                
-                
-            }
-            
         }
-        
-        return newk;
-        
+        return cnt;
     }
-    
-    int maximum(vector<int>& nums){
-          int n=nums.size();
-        int maxi=INT_MIN;
-        for(int i=0;i<n;i++){
-
-            maxi=max(maxi,nums[i]);
-        }
-        return maxi;
-    }
-    
-    int summision(vector<int>& nums){
-     int sum=0;
+    int sum(vector<int>& nums){
+        int summ=0;
         for(int i=0;i<nums.size();i++){
-            sum+=nums[i];
-}
-        return sum;
+            summ+=nums[i];
+        }
+        return summ;
     }
+    
     
     int splitArray(vector<int>& nums, int k) {
         int n=nums.size();
-        int l=maximum(nums);
-        int ans=0;
-        int h=summision(nums);
+        
+        int l=*max_element(nums.begin(),nums.end());
+        int h=sum(nums);
+        int ans=-1;
         while(l<=h){
-            int mid=l+(h-l)/2;
-            if(solve(nums,mid)>k){
+            int mid=(l+h)/2;
+            
+             if(canfind(nums,n,mid) <=k){
+                ans=mid;
+                h=mid-1;
+            }else if(canfind(nums,n,mid) >k){
                l=mid+1;
             }
-            else{
-                ans=mid;
-                 h=mid-1;
-            }
-            
         }
+        
         return ans;
     }
 };
