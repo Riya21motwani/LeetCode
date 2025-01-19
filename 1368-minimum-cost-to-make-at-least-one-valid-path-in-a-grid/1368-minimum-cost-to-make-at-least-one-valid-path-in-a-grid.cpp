@@ -1,33 +1,58 @@
 #include <bits/stdc++.h>
 using namespace std;
-const int dx[4] = {0, 0, 1, -1};
-const int dy[4] = {1, -1, 0, 0};
+
+const int drow[4] = {0, -1, 1, 0};
+const int dcol[4] = {1, 0, 0, -1};
+
 class Solution {
 public:
+    typedef pair<int, pair<int, int>> p;
+
     int minCost(vector<vector<int>>& grid) {
-        int r = grid.size(), c = grid[0].size();
-        vector<vector<int>> dist(r, vector<int>(c, INT_MAX));
-        deque<pair<int, int>> dq;
-        dq.emplace_front(0, 0);
-        dist[0][0] = 0;
-        
-        while (!dq.empty()) {
-            auto [x, y] = dq.front(); dq.pop_front();
-            for (int i = 0; i < 4; ++i) {
-                int nx = x + dx[i], ny = y + dy[i];
-                if (nx >= 0 && nx < r && ny >= 0 && ny < c) {
-                    int cost = (i + 1 == grid[x][y]) ? 0 : 1;
-                    if (dist[x][y] + cost < dist[nx][ny]) {
-                        dist[nx][ny] = dist[x][y] + cost;
-                        if (cost == 0) {
-                            dq.emplace_front(nx, ny);
-                        } else {
-                            dq.emplace_back(nx, ny);
+        int n = grid.size();
+        int m = grid[0].size();
+        vector<vector<int>> dis(n, vector<int>(m, 1e9));
+        priority_queue<p, vector<p>, greater<p>> pq;
+
+        pq.push({0, {0, 0}});
+        dis[0][0] = 0;
+
+        while (!pq.empty()) {
+            int distance = pq.top().first;
+            int row = pq.top().second.first;
+            int col = pq.top().second.second;
+            pq.pop();
+
+           
+            if (distance > dis[row][col]) {
+                continue;
+            }
+
+            for (int i = 0; i < 4; i++) {
+                int nrow = row + drow[i];
+                int ncol = col + dcol[i];
+
+                if (nrow >= 0 && nrow < n && ncol >= 0 && ncol < m) {
+                    if ((grid[row][col] == 1 && i != 0) || 
+                        (grid[row][col] == 2 && i != 3) || 
+                        (grid[row][col] == 3 && i != 2) || 
+                        (grid[row][col] == 4 && i != 1)) {
+                       
+                        if (distance + 1 < dis[nrow][ncol]) {
+                            dis[nrow][ncol] = distance + 1;
+                            pq.push({distance + 1, {nrow, ncol}});
+                        }
+                    } else {
+                      
+                        if (distance < dis[nrow][ncol]) {
+                            dis[nrow][ncol] = distance;
+                            pq.push({distance, {nrow, ncol}});
                         }
                     }
                 }
             }
         }
-        return dist[r-1][c-1];
+
+        return dis[n - 1][m - 1];
     }
 };
