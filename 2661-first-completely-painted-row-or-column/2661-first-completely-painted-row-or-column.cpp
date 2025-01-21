@@ -4,32 +4,33 @@ public:
         int n=mat.size();
         int m=mat[0].size();
         int n1=arr.size();
-        unordered_map<int,pair<int,int>>umap;
+       unordered_map<int,int>umap;
 
-        //o(m*n)
-        for(int i=0;i<n;i++){
-            for(int j=0;j<m;j++){
-                umap[mat[i][j]] = {i, j};
-            }
+       for(int i=0;i<n1;i++){
+        umap[arr[i]]=i;
+       }
+
+       vector<int>row(n,-1);
+       vector<int>col(m,-1);
+
+       for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            int idx=umap[mat[i][j]];
+            row[i]=max(row[i],idx);
+            col[j]=max(col[j],idx);
         }
-        vector<int>drow(n);
-        vector<int>dcol(m);
-        for(int i=0;i<n1;i++){
-           int row= umap[arr[i]].first;
-           int col=umap[arr[i]].second;
-           drow[row]++;
-           dcol[col]++;
+       }
 
-           if(drow[row]==m|| dcol[col]==n){
-            return i;
-           }
-          
-           
-           
-        }
+        int mini=INT_MAX;
 
-        return -1;
+       for(int i=0;i<n;i++){
+        mini=min(mini,row[i]);
+       }
+       for(int i=0;i<m;i++){
+        mini=min(mini,col[i]);
+       }
 
 
+        return mini;
     }
 };
