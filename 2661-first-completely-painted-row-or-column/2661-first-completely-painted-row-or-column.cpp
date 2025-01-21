@@ -1,24 +1,35 @@
 class Solution {
 public:
     int firstCompleteIndex(vector<int>& arr, vector<vector<int>>& mat) {
-        const int m=mat.size(), n=mat[0].size(), N=m*n;
-        vector<int> idx(N+1);
-        for(int i=0; i<N; i++)
-            idx[arr[i]]=i;
+        int n=mat.size();
+        int m=mat[0].size();
+        int n1=arr.size();
+        unordered_map<int,pair<int,int>>umap;
 
-        vector<int> to_i(N), to_j(N);
-        for(int i=0; i<m; i++){
-            for(int j=0; j<n; j++){
-                int pos=idx[mat[i][j]];
-                to_i[pos]=i;
-                to_j[pos]=j;
+        //o(m*n)
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                umap[mat[i][j]] = {i, j};
             }
         }
-        vector<int> row(m), col(n);
-        for(int i=0; i<N; i++){
-            int pos=idx[arr[i]];
-            if (++row[to_i[pos]]==n || ++col[to_j[pos]]==m) return i;
+        vector<int>drow(n);
+        vector<int>dcol(m);
+        for(int i=0;i<n1;i++){
+           int row= umap[arr[i]].first;
+           int col=umap[arr[i]].second;
+           drow[row]++;
+           dcol[col]++;
+
+           if(drow[row]==m|| dcol[col]==n){
+            return i;
+           }
+          
+           
+           
         }
+
         return -1;
+
+
     }
 };
