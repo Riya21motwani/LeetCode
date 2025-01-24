@@ -1,44 +1,39 @@
 class Solution {
 public:
+
+    bool iscycle(int node, vector<vector<int>>& graph, vector<bool>&vis,vector<bool>&path){
+        vis[node]=true;
+        path[node]=true;
+        for(auto it:graph[node]){
+            if(!vis[it] && iscycle(it,graph,vis,path)){
+                return true ;
+            }
+            else if(vis[it]==true  && path[it]==true){
+                return true;
+            }
+        }
+        path[node]=false;
+        return false;
+    }
+
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        
         int n=graph.size();
-        vector<int>adj[n];
-        for(int i=0;i<n;i++){
-            for(auto it:graph[i]){
-                adj[i].push_back(it);
+        vector<bool>vis(n,0);
+         vector<bool>path(n,0);
+         vector<int>res;
+
+         for(int i=0;i<n;i++){
+            if(!vis[i]){
+             iscycle(i,graph,vis,path);   
+            } 
+         }
+
+         for(int i=0;i<n;i++){
+            if(path[i]!=true){
+                res.push_back(i);
             }
-        }
-        
-        vector<int>adjrev[n];
-        vector<int>indegree(n,0);
-        for(int i=0;i<n;i++){
-            for(auto it:adj[i]){
-                adjrev[it].push_back(i);
-                indegree[i]++;
-                
-            }
-        }
-        queue<int>q;
-        
-        for(int i=0;i<n;i++){
-            if(indegree[i]==0){
-                q.push(i);
-            }
-        }
-        vector<int>ans;
-        while(!q.empty()){
-            int node=q.front();
-            q.pop();
-            ans.push_back(node);
-            for(auto it:adjrev[node]){
-                indegree[it]--;
-                if(indegree[it]==0){
-                    q.push(it);
-                }
-            }
-        }
-        sort(ans.begin(),ans.end());
-        return ans;
-        
+         }
+        return res;
     }
 };
