@@ -1,37 +1,34 @@
 class Solution {
 private:
    
-    int countFishes(vector<vector<int>>& grid, vector<vector<bool>>& visited,
-                    int row, int col) {
-        int numRows = grid.size(), numCols = grid[0].size(), fishCount = 0;
-        queue<pair<int, int>> q;
-        q.push({row, col});
-        visited[row][col] = true;
+    int countFishes(vector<vector<int>>& grid,
+                    int row, int col, int &sum, int &maxi) {
+        int n=grid.size();
+        int m=grid[0].size();
+        if(row<0 || col<0 || col>=m || row>=n|| grid[row][col]==0){
+            return 0;
+        }
+        sum+=grid[row][col];
+        grid[row][col]=0;
+        maxi=max(maxi,sum);
+        
+
 
       
-        vector<int> rowDirections = {0, 0, 1, -1};
-        vector<int> colDirections = {1, -1, 0, 0};
+        int drow[] = {0, 0, 1, -1};
+        int dcol[]= {1, -1, 0, 0};
 
-      
-        while (!q.empty()) {
-            row = q.front().first;
-            col = q.front().second;
-            q.pop();
-            fishCount += grid[row][col];
-
-          
-            for (int i = 0; i < 4; i++) {
-                int newRow = row + rowDirections[i];
-                int newCol = col + colDirections[i];
-                if (0 <= newRow && newRow < numRows && 0 <= newCol &&
-                    newCol < numCols && grid[newRow][newCol] &&
-                    !visited[newRow][newCol]) {
-                    q.push({newRow, newCol});
-                    visited[newRow][newCol] = true;
-                }
+        for(int i=0;i<4;i++){
+            int nrow=drow[i]+row;
+            int ncol=col+dcol[i];
+            if(nrow>=0 && ncol>=0 && nrow<n && ncol<m && grid[nrow][ncol]>0){
+                
+                
+                countFishes(grid,nrow,ncol,sum,maxi);
             }
         }
-        return fishCount;
+      
+        return maxi;
     }
 
 public:
@@ -43,8 +40,10 @@ public:
        
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
-                if (grid[i][j] && !visited[i][j]) {
-                    result = max(result, countFishes(grid, visited, i, j));
+                int sum=0;
+                int maxi=0;
+                if (grid[i][j]>0) {
+                    result = max(result, countFishes(grid, i, j,sum,maxi));
                 }
             }
         }
