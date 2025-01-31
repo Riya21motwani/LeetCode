@@ -10,7 +10,9 @@ public:
         visited[u]=true;
         for(auto it:adj[u]){
             if(!visited[it]){
-                alreadyconnected(it,v,adj,visited);
+                if(alreadyconnected(it,v,adj,visited)){
+                    return true;
+                }
             }
         }
         return false;
@@ -20,42 +22,24 @@ public:
         int n=edges.size();
         int m=edges[0].size();
         unordered_map<int,vector<int>>adj;
+        vector<int>ans;
 
         for(int i=0;i<n;i++){
            int u=edges[i][0];
            int v=edges[i][1];
+           vector<bool>visited(n+1,false);
+           if(adj.find(u)!=adj.end() && adj.find(v)!=adj.end() && alreadyconnected(u,v,adj,visited)){
+            return edges[i];
+           }
            adj[u].push_back(v);
            adj[v].push_back(u);
+
         }
 
-        vector<int>vis(n+1,0);
-        vector<int>ans;
+        
 
-        for(int i=0;i<edges.size();i++){
-            int u=edges[i][0];
-            int v=edges[i][1];
-            if(vis[u]==true && vis[v]==true){
-                vector<bool>visited(n+1,false);
-                if(alreadyconnected(u,v,adj,visited)==false){
-                    
-                    ans.push_back(u);
-                     ans.push_back(v);
-                     break;
-                }
-            }
-           else {
+       
 
-            if(vis[u]==false){
-                vis[u]=true;
-            }
-            if(vis[v]==false){
-                vis[v]=true;
-            }
-           }
-             
-            
-        }
-
-        return ans;
+        return {};
     }
 };
