@@ -1,108 +1,66 @@
-class disjointset {
-   
-public:
-     vector<int> rank, parent, size;
-    disjointset(int n) {
-        rank.resize(n + 1, 0);
-        parent.resize(n + 1);
-        size.resize(n + 1);
-        for (int i = 0; i <= n; i++) {
-            parent[i] = i;
-            size[i] = 1;
-        }
-    }
-
-    int findUPar(int node) {
-        if (node == parent[node])
-            return node;
-        return parent[node] = findUPar(parent[node]);
-    }
-
-    void unionByRank(int u, int v) {
-        int ulp_u = findUPar(u);
-        int ulp_v = findUPar(v);
-        if (ulp_u == ulp_v) return;
-        if (rank[ulp_u] < rank[ulp_v]) {
-            parent[ulp_u] = ulp_v;
-        }
-        else if (rank[ulp_v] < rank[ulp_u]) {
-            parent[ulp_v] = ulp_u;
-        }
-        else {
-            parent[ulp_v] = ulp_u;
-            rank[ulp_u]++;
-        }
-    }
-
-    void unionBySize(int u, int v) {
-        int ulp_u = findUPar(u);
-        int ulp_v = findUPar(v);
-        if (ulp_u == ulp_v) return;
-        if (size[ulp_u] < size[ulp_v]) {
-            parent[ulp_u] = ulp_v;
-            size[ulp_v] += size[ulp_u];
-        }
-        else {
-            parent[ulp_v] = ulp_u;
-            size[ulp_u] += size[ulp_v];
-        }
-    }
-};
 class Solution {
 public:
+    int dfs(int i, int j ,vector<vector<int>>& grid,vector<vector<int>>& vis , int id){
+        int n=grid.size();
+        if(i<0 || j<0 || i>=n || j>=n || vis[i][j]==1 || grid[i][j]==0){
+            return 0;
+        }
+        int cnt=1;
+        vis[i][j]=1;
+        grid[i][j]=id;
+        int drow[]={-1,1,0,0};
+        int dcol[]={0,0,-1,1};
+        for(int k=0;k<4;k++){
+            int nrow=i+drow[k];
+            int ncol=j+dcol[k];
+            cnt+=dfs(nrow,ncol,grid,vis, id);
+        }
+        return cnt;
+    }
+
     int largestIsland(vector<vector<int>>& grid) {
-         int n=grid.size();
-        disjointset ds(n*n);
-       
-        for(int row=0;row<n;row++){
-            for(int col=0;col<n;col++){
-                if(grid[row][col]==0)continue;
-                int drow[]={-1,0,1,0};
-                int dcol[]={0,1,0,-1};
-                for(int i=0;i<4;i++){
-                    int nrow=row+drow[i];
-                    int ncol=col+dcol[i];
-                    if(ncol>=0 &&nrow>=0&&ncol<n&&nrow<n && grid[nrow][ncol]==1){
-                        int node=row*n+col;
-                        int newnode=nrow*n+ncol;
-                        ds.unionBySize(node,newnode);
-                    }
-                }
-                
-            }
-        }
-        
+        int n=grid.size();
+        unordered_map<int,int>umap;
         int maxi=0;
-        for(int row=0;row<n;row++){
-            for(int col=0;col<n;col++){
-                unordered_set<int>uset;
-               if(grid[row][col]==1)continue;
-                int drow[]={-1,0,1,0};
-                int dcol[]={0,1,0,-1};
-                for(int i=0;i<4;i++){
-                    int nrow=row+drow[i];
-                    int ncol=col+dcol[i];
-                    if(ncol>=0 &&nrow>=0&&ncol<n&&nrow<n && grid[nrow][ncol]==1){
-                        uset.insert(ds.findUPar(nrow*n+ncol));
-                    }
-                }
+         int drow[]={-1,1,0,0};
+        int dcol[]={0,0,-1,1};
+        int id=2;
+        vector<vector<int>>vis(n,vector<int>(n,0));
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
                 
-                int totalsize=0;
-                for(auto it:uset){
-                    totalsize+=ds.size[it];
-                    
+                if(grid[i][j]==1 && !vis[i][j]){
+                    int size=dfs(i,j,grid,vis,id);
+                    umap[id]=size;
+                    id++;
+                    maxi=max(maxi,size);
+
                 }
-                totalsize+=1;
-                maxi=max(maxi,totalsize);
-                
             }
         }
-        for(int i=0;i<n*n;i++){
-            maxi=max(maxi,ds.size[ds.findUPar(i)]);
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                unordered_set<int>uset;
+                int sum=0;
+                if(grid[i][j]==0){
+                    
+                    for(int k=0;k<4;k++){
+                        int nrow=i+drow[k];
+                        int ncol=j+dcol[k];
+                        if(nrow<n && ncol<n &&nrow>=0 &&ncol>=0 && grid[nrow][ncol]>1){
+                            uset.insert(grid[nrow][ncol]);
+                        }
+                    }
+                }
+                for(auto it:uset){
+                    sum+=umap[it];
+                }
+                maxi=max(maxi,sum+1);
+
+            }
         }
-        
-        
-        return maxi;
-        
+
+return maxi;
     }
 };
