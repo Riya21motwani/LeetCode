@@ -2,15 +2,23 @@ class Solution {
 public:
     string clearDigits(string s) {
         string ans="";
-        for(auto ch:s){
-            if(isdigit(ch)){
-                if(ans.size()>=1){
-                    ans.pop_back();
-                }
+        stack<char>st;
+
+        for(int i=0;i<s.size();i++){
+            if(s[i] >='a' && s[i]<='z'){
+                st.push(s[i]);
             }else{
-                ans.push_back(ch);
+
+                if(!st.empty() ){
+                    st.pop();
+                }
             }
         }
+        while(!st.empty()){
+            ans+=st.top();
+            st.pop();
+        }
+        reverse(ans.begin(),ans.end());
         return ans;
     }
 };
