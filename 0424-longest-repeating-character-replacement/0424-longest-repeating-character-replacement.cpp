@@ -10,12 +10,9 @@ public:
         while(r<n){
             umap[s[r]-'A']++;
             maxf=max(maxf,umap[s[r]-'A']);
-            while((r-l+1)-maxf >k){
+            if((r-l+1)-maxf >k){
                 umap[s[l]-'A']--;
-                 maxf=0;
-                for(int i=0;i<=25;i++){
-                    maxf=max(maxf,umap[i]);
-                }
+
                 l++;
             }
             if((r-l+1) -maxf <=k){
