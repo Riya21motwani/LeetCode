@@ -2,25 +2,28 @@ class Solution {
 public:
     int characterReplacement(string s, int k) {
         int n=s.size();
-        int i=0;int j=0;
-        int maxlen=0;
-        int maxfreq=0;
-        int map[26]={0};
-        while(j<n){
-            
-            map[s[j]-'A']++;
-            maxfreq=max(maxfreq, map[s[j]-'A']);
-            if(j-i+1 - maxfreq >k){
-               map[s[i]-'A']--;
-                
-                i++;
+        int l=0;
+        int r=0;
+        int maxilen=0;
+        int maxf=0;
+        vector<int>umap(26,0);
+        while(r<n){
+            umap[s[r]-'A']++;
+            maxf=max(maxf,umap[s[r]-'A']);
+            while((r-l+1)-maxf >k){
+                umap[s[l]-'A']--;
+                 maxf=0;
+                for(int i=0;i<=25;i++){
+                    maxf=max(maxf,umap[i]);
+                }
+                l++;
             }
-            if(j-i+1 - maxfreq <=k){
-                maxlen=max(maxlen , j-i+1);
+            if((r-l+1) -maxf <=k){
+                maxilen=max(maxilen,r-l+1);
             }
-            
-            j++;
+            r++;
         }
-        return maxlen;
+
+        return maxilen;
     }
 };
