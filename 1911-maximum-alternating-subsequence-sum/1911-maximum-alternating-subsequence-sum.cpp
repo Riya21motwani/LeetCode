@@ -33,11 +33,11 @@ public:
                 long long t1=INT_MIN;
                  long long t2=INT_MIN;
                 if(flag==0){
-                 t1=max(nums[ind]+f(ind+1,1,nums,dp), f(ind+1,0,nums,dp));
+                 t1=max(nums[ind]+dp[ind+1][1], dp[ind+1][0]);
               }
        
                  else if(flag==1){
-                      t2=max(-nums[ind]+f(ind+1,0,nums,dp), f(ind+1,1,nums,dp));
+                      t2=max(-nums[ind]+dp[ind+1][0], dp[ind+1][1]);
              } 
 
          dp[ind][flag]=max(t1,t2);
