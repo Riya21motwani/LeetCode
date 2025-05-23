@@ -26,25 +26,28 @@ public:
 
     long long maxAlternatingSum(vector<int>& nums) {
         int n=nums.size();
-        vector<vector<long long>>dp(n+1,vector<long long>(2,0));
+        // vector<vector<long long>>dp(n+1,vector<long long>(2,0));
+        vector<long long >prev(2,0);
+        vector<long long>curr(2,0);
 
         for(int ind=n-1;ind>=0;ind--){
             for(int flag=0;flag<=1;flag++){
-                long long t1=INT_MIN;
-                 long long t2=INT_MIN;
+                long long t1 = LLONG_MIN;
+long long t2 = LLONG_MIN;
                 if(flag==0){
-                 t1=max(nums[ind]+dp[ind+1][1], dp[ind+1][0]);
+                 t1=max(nums[ind]+prev[1], prev[0]);
               }
        
                  else if(flag==1){
-                      t2=max(-nums[ind]+dp[ind+1][0], dp[ind+1][1]);
+                      t2=max(-nums[ind]+prev[0], prev[1]);
              } 
 
-         dp[ind][flag]=max(t1,t2);
+              curr[flag]=max(t1,t2);
             }
+            prev=curr;
         }
 
-        return max(dp[0][1],dp[0][0]);
+        return prev[0];
         
         // return f(0,0, nums,dp);
     }
