@@ -26,7 +26,26 @@ public:
 
     long long maxAlternatingSum(vector<int>& nums) {
         int n=nums.size();
-        vector<vector<long long>>dp(n,vector<long long>(2,-1));
-        return f(0,0, nums,dp);
+        vector<vector<long long>>dp(n+1,vector<long long>(2,0));
+
+        for(int ind=n-1;ind>=0;ind--){
+            for(int flag=0;flag<=1;flag++){
+                long long t1=INT_MIN;
+                 long long t2=INT_MIN;
+                if(flag==0){
+                 t1=max(nums[ind]+f(ind+1,1,nums,dp), f(ind+1,0,nums,dp));
+              }
+       
+                 else if(flag==1){
+                      t2=max(-nums[ind]+f(ind+1,0,nums,dp), f(ind+1,1,nums,dp));
+             } 
+
+         dp[ind][flag]=max(t1,t2);
+            }
+        }
+
+        return max(dp[0][1],dp[0][0]);
+        
+        // return f(0,0, nums,dp);
     }
 };
