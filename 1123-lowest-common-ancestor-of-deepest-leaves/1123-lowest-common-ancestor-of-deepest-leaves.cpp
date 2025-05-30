@@ -12,46 +12,43 @@
 class Solution {
 public:
 
-    TreeNode* f( TreeNode*root, unordered_map<int,int>&umap, int &maxi){
-
-        if(root==NULL || umap[root->val]==maxi){
+    TreeNode* lca( TreeNode* root, int &maxdepth , unordered_map<int,int>&umap){
+        if(root==NULL){
+            return NULL;
+        }
+        if(umap[root->val]==maxdepth){
             return root;
         }
-
-    
-        TreeNode* t1 =f(root->left,umap,maxi);
-        TreeNode* t2=f(root->right,umap,maxi);
-
-        if(t1!=NULL && t2!=NULL){
+        TreeNode* lh=lca(root->left,maxdepth,umap);
+        TreeNode* rh=lca(root->right,maxdepth,umap);
+        if(lh!=NULL && rh!=NULL){
             return root;
+        }else{
+            if(lh!=NULL){
+                return lh;
+            }else{
+                return rh;
+            }
         }
-        if(t1!=NULL){
-            return t1;
-        }
-        
-            return t2;
-
-        
-        
-
     }
 
-    void finddepth(int d, TreeNode*root, unordered_map<int,int>&umap, int &maxi){
+    void dfs( TreeNode* root ,  unordered_map<int,int>&umap , int d, int &maxdepth){
+
         if(root==NULL){
             return;
         }
         umap[root->val]=d;
-        maxi=max(maxi,d);
-        finddepth(d+1,root->left,umap,maxi);
-        finddepth(d+1,root->right,umap,maxi);
+        maxdepth=max(maxdepth,d);
+        dfs(root->left,umap,d+1,maxdepth);
+        dfs(root->right,umap,d+1,maxdepth);
     }
+    
 
     TreeNode* lcaDeepestLeaves(TreeNode* root) {
-        unordered_map<int,int>umap;
-        int maxi=0;
-        finddepth(0,root,umap,maxi);
-
-        return f(root,umap,maxi);
-
+       unordered_map<int,int>umap;
+       int maxdepth=0;
+       int d=0;
+       dfs(root,umap,d, maxdepth);
+       return lca(root,maxdepth,umap);
     }
 };
