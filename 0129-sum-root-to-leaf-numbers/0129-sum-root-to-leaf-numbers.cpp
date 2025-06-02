@@ -11,20 +11,26 @@
  */
 class Solution {
 public:
-     void inorder(TreeNode* root, long  num, long & sum){
-        if(!root) return;
 
-        num+=root->val;
-        if(!root->left && !root->right)sum+=num;
+    void f( TreeNode* root , int &sum , string temp){
+        if(root==NULL){
+            return;
+        }
+        temp+=to_string(root->val);
+        if(root->left==NULL && root->right==NULL){
+            sum+=stoi(temp);
+            return;
+        }
+        f(root->left,sum,temp);
+        f(root->right,sum,temp);
 
-        inorder(root->left,num*10,sum);
-        inorder(root->right,num*10,sum);
     }
-    int sumNumbers(TreeNode* root) {
-        ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL);
 
-        long num=0,sum=0;
-        inorder(root,num,sum);
+
+    int sumNumbers(TreeNode* root) {
+        int sum=0;
+        string temp="";
+        f(root,sum,temp);
         return sum;
     }
 };
