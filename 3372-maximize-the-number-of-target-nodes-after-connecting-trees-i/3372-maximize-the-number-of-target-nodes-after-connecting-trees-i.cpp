@@ -49,7 +49,7 @@ public:
     }
 
     vector<int> maxTargetNodes(vector<vector<int>>& edges1, vector<vector<int>>& edges2, int k) {
-        vector<int>a1=f(edges1,k;
+        vector<int>a1=f(edges1,k);
         vector<int>a2=f(edges2,k-1);
         int maxicnt=*max_element(a2.begin(),a2.end());
         
