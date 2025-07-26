@@ -1,32 +1,29 @@
-#include<bits/stdc++.h>
 class Solution {
 public:
-    
     long long countSubarrays(vector<int>& nums, int k) {
-        long long n=nums.size();
-        
-         long long res=0;
-       long long cnt_maxi=0;
-       int maxi=*max_element(nums.begin(),nums.end());
-        long long i=0,j=0;
-        while(j<n){
-         
-             if(nums[j]==maxi){
-                cnt_maxi++;
-                 
-             }
-               while(cnt_maxi>=k){
-                    res+=n-j;
-                     if(nums[i]==maxi){
-                      cnt_maxi--;
-                        
-                     }
-                   i++;
-                
-               
-            }
-            j++;
+        int n=nums.size();
+        int maxi=0;
+        for(int i=0;i<n;i++){
+            maxi=max(maxi,nums[i]);
         }
-        return res;
+        int i=0;
+        int j=0;
+        long long  ans=0;
+        int cnt=0;
+        while(j<n){
+           if(nums[j]==maxi){
+            cnt++;
+            while(cnt>=k){
+                ans+=(n-j);
+                if(maxi==nums[i]){
+                    cnt--;
+                }
+                i++;
+            }
+           }
+           j++;
+        }
+
+        return ans;
     }
 };
