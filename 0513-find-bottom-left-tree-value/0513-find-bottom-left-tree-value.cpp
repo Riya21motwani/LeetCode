@@ -15,11 +15,10 @@ public:
         queue<TreeNode*>q;
         q.push(root);
         int ans=-1;
-
         while(!q.empty()){
             int size=q.size();
             for(int i=0;i<size;i++){
-                TreeNode* node=q.front();
+                TreeNode*node=q.front();
                 q.pop();
                 if(i==0){
                     ans=node->val;
@@ -31,6 +30,7 @@ public:
                     q.push(node->right);
                 }
             }
+
         }
 
         return ans;
