@@ -1,41 +1,51 @@
 class Solution {
 public:
-    
-  static bool comp(string& s1, string& s2){
-    return s1.size() < s2.size();
-};
 
-    
-    bool check(string &s1,string &s2){
-        if(s1.size()!=s2.size()+1)return false;
+    bool isValid(string &word1, string &word2){
+        int n=word1.size();
+        int m=word2.size();
+
+        if(m!=n+1){
+            return false;
+        }
+
         int i=0;
         int j=0;
-        while(i<s1.size()){
-            if(s1[i]==s2[j] && j<s2.size()){
+
+        while(i<n && j<m){
+            if(word1[i]==word2[j]){
                 i++;
                 j++;
             }else{
-                i++;
+                j++;
             }
         }
-        if(i==s1.size() && j==s2.size())return true;
-        return false;
-        
+
+        return i==n;
     }
-    
+
+
     int longestStrChain(vector<string>& words) {
         int n=words.size();
+      sort(words.begin(), words.end(), [](const string &a, const string &b) {
+              return a.size() < b.size();
+          });
+
         vector<int>dp(n,1);
-        int maxi=-1;
-        sort(words.begin(),words.end(),comp);
+
         for(int i=0;i<n;i++){
-            for(int prev=0;prev<i;prev++){
-                if(check(words[i],words[prev]) && 1+dp[prev]>dp[i]){
-                    dp[i]=1+dp[prev];
+            for(int j=i+1;j<n;j++){
+                if(isValid(words[i],words[j])  && dp[i]+1 >dp[j]){
+                    dp[j]=1+dp[i];
                 }
             }
+        }
+        int maxi=0;
+        for(int i=0;i<n;i++){
             maxi=max(maxi,dp[i]);
         }
+
+
         return maxi;
     }
 };
