@@ -11,30 +11,27 @@
  */
 class Solution {
 public:
-    
-      TreeNode* formtree(vector<int>& postorder, int poststart,int postend, int instart, int inend ,  map<int,int >&mp ){
-         if(poststart>postend || instart>inend){
-             return NULL;
-         }
-          TreeNode*root=new TreeNode(postorder[postend]);
-         
-         int inroot=mp[root->val];
-         int numsend=inroot-instart;
-         root->left=formtree(postorder, poststart, poststart+numsend-1, instart,inroot-1,mp);
-         root->right=formtree(postorder,poststart+numsend,postend-1, inroot+1,inend,mp);
-         
-         return root;
-         
-     }
-    
-    
-    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
-        map<int,int >mp;
-        for(int i=0;i<inorder.size();i++){
-            mp[inorder[i]]=i;
-            }
-        
-        TreeNode* root=formtree(postorder,0,postorder.size()-1, 0,inorder.size()-1,mp);
+
+    TreeNode*f(int instart, int inend, int poststart, int postend, vector<int>& inorder, vector<int>& postorder, unordered_map<int,int>&umap){
+        if(instart>inend || poststart>postend){
+            return NULL;
+        }
+        TreeNode*root=new TreeNode(postorder[postend]);
+        int inroot=umap[root->val];
+        int numleft=inroot-instart;
+ 
+        root->left=f(instart,inroot-1,poststart,poststart+numleft-1,inorder,postorder,umap);
+        root->right=f(inroot+1,inend,poststart+numleft,postend-1,inorder,postorder,umap);
+
         return root;
+    }
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+       unordered_map<int,int>umap;
+       for(int i=0;i<inorder.size();i++){
+        umap[inorder[i]]=i;
+       }
+        int n=inorder.size();
+        int m=postorder.size();
+       return f(0,n-1,0,m-1,inorder,postorder,umap);
     }
 };
