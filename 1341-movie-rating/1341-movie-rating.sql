@@ -1,49 +1,17 @@
--- Movies table:
--- +-------------+--------------+
--- | movie_id    |  title       |
--- +-------------+--------------+
--- | 1           | Avengers     |
--- | 2           | Frozen 2     |
--- | 3           | Joker        |
--- +-------------+--------------+
--- Users table:
--- +-------------+--------------+
--- | user_id     |  name        |
--- +-------------+--------------+
--- | 1           | Daniel       |
--- | 2           | Monica       |
--- | 3           | Maria        |
--- | 4           | James        |
--- +-------------+--------------+
--- MovieRating table:
--- +-------------+--------------+--------------+-------------+
--- | movie_id    | user_id      | rating       | created_at  |
--- +-------------+--------------+--------------+-------------+
--- | 1           | 1            | 3            | 2020-01-12  |
--- | 1           | 2            | 4            | 2020-02-11  |
--- | 1           | 3            | 2            | 2020-02-12  |
--- | 1           | 4            | 1            | 2020-01-01  |
--- | 2           | 1            | 5            | 2020-02-17  | 
--- | 2           | 2            | 2            | 2020-02-01  | 
--- | 2           | 3            | 2            | 2020-03-01  |
--- | 3           | 1            | 3            | 2020-02-22  | 
--- | 3           | 2            | 4            | 2020-02-25  | 
--- +-------------+--------------+--------------+-------------+
-
-
-
-(SELECT name AS results
-FROM users
-INNER JOIN MovieRating USING(user_id)
-GROUP BY user_id
-ORDER BY COUNT(rating) DESC , name
+# Write your MySQL query statement below
+(SELECT u.name AS results
+FROM MovieRating m
+JOIN Users u
+ON m.user_id=u.user_id
+GROUP BY u.user_id
+ORDER BY COUNT(*) DESC, u.name ASC
 LIMIT 1)
 UNION ALL
-(SELECT title AS results
-FROM Movies
-INNER JOIN MovieRating USING(movie_id)
-WHERE MONTH(created_at)='02'  AND YEAR(created_at)='2020'
-GROUP BY title
-ORDER BY AVG(rating) DESC ,title
+(SELECT m.title
+FROM MovieRating r
+JOIN Movies m
+ON m.movie_id=r.movie_id
+WHERE r.created_at BETWEEN '2020-02-01' AND '2020-02-29'
+GROUP BY r.movie_id
+ORDER BY AVG(r.rating) DESC,m.title ASC
 LIMIT 1)
-
