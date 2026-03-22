@@ -1,32 +1,33 @@
 class Solution {
 public:
-    
-//     
-    int n, m;
-    
-    void dfs( vector<vector<int>>& image, int sr, int sc, int color , int initialcolor ,  vector<vector<int>>&ans , int drow[],int dcol[]){
-        ans[sr][sc]=color;
-        
-        for(int i=0;i<4;i++){
-            int nrow=drow[i]+sr;
-            int ncol=dcol[i]+sc;
-            if(nrow>=0 && ncol>=0 && nrow<n && ncol< m && image[nrow][ncol]==initialcolor && ans[nrow][ncol] !=color){
-                
-                dfs(image, nrow,ncol , color, initialcolor,ans, drow,dcol);
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        int ori=image[sr][sc];
+        int n=image.size();
+        int m=image[0].size();
+        queue<pair<int,int>>q;
+        vector<vector<int>>vis(n,vector<int>(m,0));
+        q.push({sr,sc});
+        vis[sr][sc]=1;
+        image[sr][sc]=color;
+         int drow[]={-1,1,0,0};
+            int dcol[]={0,0,-1,1};
+        while(!q.empty()){
+            int row=q.front().first;
+            int col=q.front().second;
+            q.pop();
+            
+           
+            for(int i=0;i<4;i++){
+                int nrow=drow[i]+row;
+                int ncol=dcol[i]+col;
+                if(nrow>=0 && ncol>=0 && nrow<n && ncol<m && vis[nrow][ncol]==0 && image[nrow][ncol]==ori){
+                    q.push({nrow,ncol});
+                    image[nrow][ncol]=color;
+                     vis[nrow][ncol]=1;
+                }
             }
         }
-    }
-    
-    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
-         vector<vector<int>>ans=image;
-        n=image.size();
-        m=image[0].size();
-        int drow[]={-1,0,1,0};
-        int dcol[]={0,1,0,-1};
-        int initialcolor=image[sr][sc];
-    
-       dfs(image,sr,sc,color,initialcolor, ans , drow, dcol);
-            
-            return ans;
+
+        return image;
     }
 };
