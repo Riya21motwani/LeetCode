@@ -12,56 +12,38 @@
 class Solution {
 public:
     TreeNode* createBinaryTree(vector<vector<int>>& descriptions) {
-       
-        unordered_map<int, vector<pair<int, bool>>> parentToChildren;
-        unordered_set<int> allNodes;
-        unordered_set<int> children;
+        int n=descriptions.size();
+        unordered_map<int,TreeNode*>umap;
+        unordered_set<int>uset;
+        for(int i=0;i<n;i++){
+            int p=descriptions[i][0];
+            int c=descriptions[i][1];
+            int l=descriptions[i][2];
+            if(umap.find(p)==umap.end()){
+                umap[p]=new TreeNode(p);
+            }
+            if(umap.find(c)==umap.end()){
+                umap[c]=new TreeNode(c);
+            }
 
-        for (auto& desc : descriptions) {
-            int parent = desc[0];
-            int child = desc[1];
-            bool isLeft = desc[2];
-
-            parentToChildren[parent].push_back({child, isLeft});
-            allNodes.insert(parent);
-            allNodes.insert(child);
-            children.insert(child);
+            if(l==1){
+                umap[p]->left=umap[c];
+            }
+            else{
+                  umap[p]->right=umap[c];
+            }
+            
+            uset.insert(c);
         }
 
-       
-        int rootVal = 0;
-        for (int node : allNodes) {
-            if (!children.contains(node)) {
-                rootVal = node;
-                break;
+
+        for(auto &it:descriptions){
+            int parent=it[0];
+            if(uset.find(parent)==uset.end()){
+                return umap[parent];
             }
         }
 
-       
-        return dfs(parentToChildren, rootVal);
-    }
-
-private:
-    TreeNode* dfs(unordered_map<int, vector<pair<int, bool>>>& parentToChildren,
-                  int val) {
-      
-        TreeNode* node = new TreeNode(val);
-
-        
-        if (parentToChildren.find(val) != parentToChildren.end()) {
-            for (auto& child_info : parentToChildren[val]) {
-                int child = child_info.first;
-                bool isLeft = child_info.second;
-
-                
-                if (isLeft) {
-                    node->left = dfs(parentToChildren, child);
-                } else {
-                    node->right = dfs(parentToChildren, child);
-                }
-            }
-        }
-
-        return node;
+        return new TreeNode(-1);
     }
 };
