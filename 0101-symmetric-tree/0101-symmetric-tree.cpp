@@ -11,29 +11,20 @@
  */
 class Solution {
 public:
-    
-    bool check(TreeNode* root1,TreeNode* root2) {
-        
-        if (root1 == NULL && root2 == NULL) {
-            return true;
-        }
-        if(root1!=NULL && root2!=NULL){
-        return  root1->val == root2->val  && check(root1->left, root2->right)
-            && check(root1->right, root2->left);
-        }
-        return false;
+
+    bool f(TreeNode* p, TreeNode* q){
+        if(p==NULL && q==NULL)return true;
+        if(p==NULL || q==NULL)return false;
+        if((p->val !=q->val) )return false;
+
+        return f(p->left, q->right) && f(p->right, q->left);
     }
-    
-    
+
     bool isSymmetric(TreeNode* root) {
         
-       
-           if (root==NULL) {
-            
-            return true;
+        if(root==NULL)return true;
+
+        return f(root->left, root->right);
+        
         }
-        
-        return check(root->left, root->right);
-        
-    }
 };
