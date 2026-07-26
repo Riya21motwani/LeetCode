@@ -1,41 +1,36 @@
-#include<bits/stdc++.h>
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
 public:
     int widthOfBinaryTree(TreeNode* root) {
-        queue<pair<TreeNode*,long long>>q;
-        if(!root)return 0;
-        q.push({root,0});
-       int  ans=0;
-        while(!q.empty()){
-           long long  size=q.size();
-            long long  mini=q.front().second;
-           int first,last;
-           for(int i=0;i<size;i++){
-                long long  curr_id=q.front().second-mini;
-               TreeNode*node=q.front().first;
+        if(root == nullptr) return 0;
+
+        queue<pair<TreeNode*, long long>> q;
+        q.push({root, 0});
+
+        int maxi = 0;
+
+        while(!q.empty()) {
+            int size = q.size();
+            long long mini = q.front().second;
+            long long first, second;
+
+            for(int i = 0; i < size; i++) {
+                TreeNode* node = q.front().first;
+                long long val = q.front().second - mini;
                 q.pop();
-               if(i==0) first=curr_id;
-               if(i==size-1)last=curr_id;
-               if(node->left){
-                          q.push({node->left,2*curr_id+1});
-               }
-               if(node->right){
-                    q.push({node->right,2*curr_id+2});
-               }
+
+                if(i == 0) first = val;
+                if(i == size - 1) second = val;
+
+                if(node->left)
+                    q.push({node->left, 2 * val + 1});
+
+                if(node->right)
+                    q.push({node->right, 2 * val + 2});
             }
-            ans=max(ans,last-first+1);
+
+            maxi = max(maxi, (int)(second - first + 1));
         }
-        return ans;
+
+        return maxi;
     }
 };
